@@ -1,5 +1,6 @@
-package com.example.mtondolo.journalapp.database;
+package com.example.mtondolo.journalapp.room;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -16,6 +17,7 @@ public class TaskEntry {
     private int id;
     private String title;
     private String description;
+    @ColumnInfo(name = "entered_At")
     private Date enteredAt;
 
     /**
