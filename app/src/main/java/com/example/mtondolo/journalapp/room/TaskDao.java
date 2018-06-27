@@ -12,15 +12,15 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT * FROM task ORDER BY entered_At")
-    List<TaskEntry> loadAllTasks();
+    @Query("SELECT * FROM task")
+    List<TaskEntity> loadAllTasks();
 
     @Insert
-    void insertTask(TaskEntry taskEntry);
+    void insertTask(TaskEntity taskEntity);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateTask(TaskEntry taskEntry);
+    void updateTask(TaskEntity taskEntity);
 
     @Delete
-    void deleteTask(TaskEntry taskEntry);
+    void deleteTask(TaskEntity taskEntity);
 }

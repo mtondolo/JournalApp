@@ -8,40 +8,46 @@ import android.arch.persistence.room.PrimaryKey;
 import java.util.Date;
 
 /**
- * Immutable model class for a TaskEntry.
+ * Immutable model class for a TaskEntity.
  */
 @Entity(tableName = "task")
-public class TaskEntry {
+public class TaskEntity {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int id;
+
+    @ColumnInfo(name = "title")
     private String title;
+
+    @ColumnInfo(name = "description")
     private String description;
+
     @ColumnInfo(name = "entered_At")
     private Date enteredAt;
 
     /**
-     * Use this constructor to create a new active TaskEntry.
+     * Use this constructor to create a new active TaskEntity.
      * @param title       title of the task
      * @param description description of the task
      * @param enteredAt  date of entering or updating the task
      */
    @Ignore
-    public TaskEntry(String title, String description, Date enteredAt) {
+    public TaskEntity(String title, String description, Date enteredAt) {
         this.title = title;
         this.description = description;
         this.enteredAt = enteredAt;
     }
 
     /**
-     * Use this constructor to create an active TaskEntry if the TaskEntry already has an id (copy of another
-     * TaskEntry).
+     * Use this constructor to create an active TaskEntity if the TaskEntity already has an id (copy of another
+     * TaskEntity).
      * @param title       title of the task
      * @param description description of the task
      * @param enteredAt   date of entering or updating the task
      * @param id          id of the task
      */
-    public TaskEntry(int id, String title, String description, Date enteredAt) {
+    public TaskEntity(int id, String title, String description, Date enteredAt) {
         this.id = id;
         this.title = title;
         this.description = description;
