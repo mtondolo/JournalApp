@@ -1,4 +1,4 @@
-package com.example.mtondolo.journalapp.room;
+package com.example.mtondolo.journalapp.data;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -13,7 +13,7 @@ public abstract class TaskDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = TaskDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "journal_db";
+    private static final String DATABASE_NAME = "journal";
     private static TaskDatabase sInstance;
 
     public static TaskDatabase getInstance(Context context) {

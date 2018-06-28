@@ -1,4 +1,4 @@
-package com.example.mtondolo.journalapp.room;
+package com.example.mtondolo.journalapp.data;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task ORDER BY entered_At")
     List<TaskEntity> loadAllTasks();
 
     @Insert
