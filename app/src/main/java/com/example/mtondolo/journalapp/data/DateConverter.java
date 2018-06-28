@@ -1,4 +1,4 @@
-package com.example.mtondolo.journalapp.room;
+package com.example.mtondolo.journalapp.data;
 
 import android.arch.persistence.room.TypeConverter;
 
