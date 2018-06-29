@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.mtondolo.journalapp.R;
+import com.example.mtondolo.journalapp.data.TaskDatabase;
 
 import static android.widget.GridLayout.VERTICAL;
 
@@ -19,6 +20,9 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
     // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
+
+    //Create TaskDatabase member variable for the Database
+    private TaskDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +59,24 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
             }
         });
 
+        //Initialize member variable for the data base
+        mDb = TaskDatabase.getInstance(getApplicationContext());
+    }
+
+    /**
+     * This method is called after this activity has been paused or restarted.
+     * Often, this is after new data has been inserted through an AddTaskActivity,
+     * so this re-queries the database data for any changes.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Call the adapter's setTasks method using the result
+        // of the loadAllTasks method from the taskDao
+        mAdapter.setTasks(mDb.taskDao().loadAllTasks());
     }
 
     @Override
     public void onItemClickListener(int itemId) {
-        // Launch AddTaskActivity adding the itemId as an extra in the intent
     }
 }
