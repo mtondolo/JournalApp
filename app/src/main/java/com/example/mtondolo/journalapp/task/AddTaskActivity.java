@@ -1,5 +1,6 @@
 package com.example.mtondolo.journalapp.task;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -49,6 +50,35 @@ public class AddTaskActivity extends AppCompatActivity {
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
             mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
         }
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
+            mButton.setText(R.string.update_button);
+            if (mTaskId == DEFAULT_TASK_ID) {
+                // populate the UI
+                // Assign the value of EXTRA_TASK_ID in the intent to mTaskId
+                // Use DEFAULT_TASK_ID as the default
+                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+                // Get the diskIO Executor from the instance of AppExecutors and
+                // call the diskIO execute method with a new Runnable and implement its run method
+                TaskExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Use the loadTaskById method to retrieve the task with id mTaskId and
+                        // assign its value to a final TaskEntry variable
+                        final TaskEntity task = mDb.taskDao().loadTaskById(mTaskId);
+                        // Call the populateUI method with the retrieve tasks
+                        // Wrap it in a call to runOnUiThread
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateUI(task);
+                            }
+                        });
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -63,7 +93,6 @@ public class AddTaskActivity extends AppCompatActivity {
     private void initViews() {
         mDescriptionEditText = findViewById(R.id.editTextTaskDescription);
         mDetailsEditText = findViewById(R.id.editTextTaskDetails);
-
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +100,21 @@ public class AddTaskActivity extends AppCompatActivity {
                 onSaveButtonClicked();
             }
         });
+    }
+
+    /**
+     * populateUI would be called to populate the UI when in update mode
+     *
+     * @param task the taskEntry to populate the UI
+     */
+    private void populateUI(TaskEntity task) {
+        // Return if the task is null
+        if (task == null) {
+            return;
+        }
+        // Use the variable task to populate the UI
+        mDescriptionEditText.setText(task.getDescription());
+        mDetailsEditText.setText(task.getTitle());
     }
 
     /**
@@ -82,15 +126,21 @@ public class AddTaskActivity extends AppCompatActivity {
         String taskDetails = mDetailsEditText.getText().toString();
         Date date = new Date();
 
-        final TaskEntity taskEntity = new TaskEntity(taskDescription, taskDetails, date);
-
-        // Get the diskIO Executor from the instance of TaskExecutors and
-        // call the diskIO execute method with a new Runnable and implement its run method
+        final TaskEntity task = new TaskEntity(taskDescription, taskDetails, date);
         TaskExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                // Move the remaining logic inside the run method
-                mDb.taskDao().insertTask(taskEntity);
+                // Insert the task only if mTaskId matches DEFAULT_TASK_ID
+                // Otherwise update it
+                // call finish in any case
+                if (mTaskId == DEFAULT_TASK_ID) {
+                    // insert new task
+                    mDb.taskDao().insertTask(task);
+                } else {
+                    //update task
+                    task.setId(mTaskId);
+                    mDb.taskDao().updateTask(task);
+                }
                 finish();
             }
         });
