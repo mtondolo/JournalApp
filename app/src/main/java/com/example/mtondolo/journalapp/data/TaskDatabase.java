@@ -22,9 +22,6 @@ public abstract class TaskDatabase extends RoomDatabase {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         TaskDatabase.class, TaskDatabase.DATABASE_NAME)
-                        // Temporally allow MainThreadQueries before building the instance
-                        // to test if our database is working
-                        .allowMainThreadQueries()
                         .build();
             }
         }

@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import com.example.mtondolo.journalapp.R;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
+import com.example.mtondolo.journalapp.util.TaskExecutors;
 
 import java.util.Date;
 
@@ -80,9 +81,19 @@ public class AddTaskActivity extends AppCompatActivity {
         String taskDescription = mDescriptionEditText.getText().toString();
         String taskDetails = mDetailsEditText.getText().toString();
         Date date = new Date();
-        TaskEntity taskEntity = new TaskEntity(taskDescription, taskDetails, date);
-        mDb.taskDao().insertTask(taskEntity);
-        finish();
+
+        final TaskEntity taskEntity = new TaskEntity(taskDescription, taskDetails, date);
+
+        // Get the diskIO Executor from the instance of TaskExecutors and
+        // call the diskIO execute method with a new Runnable and implement its run method
+        TaskExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // Move the remaining logic inside the run method
+                mDb.taskDao().insertTask(taskEntity);
+                finish();
+            }
+        });
     }
 
 
