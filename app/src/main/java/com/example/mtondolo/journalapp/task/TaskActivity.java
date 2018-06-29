@@ -1,6 +1,5 @@
 package com.example.mtondolo.journalapp.task;
 
-import android.arch.core.executor.TaskExecutor;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.example.mtondolo.journalapp.R;
@@ -49,6 +49,37 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
         mRecyclerView.addItemDecoration(decoration);
 
          /*
+         Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
+         An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
+         and uses callbacks to signal when a user is performing these actions.
+         */
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                // Get the diskIO Executor from the instance of AppExecutors and
+                // call the diskIO execute method with a new Runnable and implement its run method
+                TaskExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Get the position from the viewHolder parameter
+                        int position = viewHolder.getAdapterPosition();
+                        List<TaskEntity> tasks = mAdapter.getTasks();
+                        // Call deleteTask in the taskDao with the task at that position
+                        mDb.taskDao().deleteTask(tasks.get(position));
+                        // Call retrieveTasks method to refresh the UI
+                        retrieveTasks();
+                    }
+                });
+            }
+        }).attachToRecyclerView(mRecyclerView);
+
+         /*
          Set the Floating Action Button (FAB) to its corresponding View.
          Attach an OnClickListener to it, so that when it's clicked, a new intent will be created
          to launch the AddTaskActivity.
@@ -76,8 +107,10 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
     @Override
     protected void onResume() {
         super.onResume();
-        // Get the diskIO Executor from the instance of AppExecutors and
-        // call the diskIO execute method with a new Runnable and implement its run method
+        retrieveTasks();
+    }
+
+    private void retrieveTasks() {
         TaskExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
