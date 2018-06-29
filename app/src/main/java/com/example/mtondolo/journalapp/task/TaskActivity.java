@@ -1,13 +1,15 @@
 package com.example.mtondolo.journalapp.task;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.mtondolo.journalapp.R;
-import com.example.mtondolo.journalapp.data.TaskDatabase;
 
 import static android.widget.GridLayout.VERTICAL;
 
@@ -36,6 +38,22 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
         mRecyclerView.addItemDecoration(decoration);
+
+         /*
+         Set the Floating Action Button (FAB) to its corresponding View.
+         Attach an OnClickListener to it, so that when it's clicked, a new intent will be created
+         to launch the AddTaskActivity.
+         */
+        FloatingActionButton fabButton = findViewById(R.id.fab);
+
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a new intent to start an AddTaskActivity
+                Intent addTaskIntent = new Intent(TaskActivity.this, AddTaskActivity.class);
+                startActivity(addTaskIntent);
+            }
+        });
 
     }
 

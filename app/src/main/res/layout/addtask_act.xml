@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This vertical linear layout contains all the views in the AddTaskActivity code.
+    This includes an EditText to addtaskEntitytask description, details and save button to save a task
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <!-- EditText for getttaskEntrytask description input -->
+    <EditText
+        android:id="@+id/editTextTaskDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/edit_task_description"
+        android:paddingBottom="@dimen/activity_horizontal_margin" />
+
+    <!-- EditText for getttaskEntitytask details input -->
+    <EditText
+        android:id="@+id/editTextTaskDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/edit_task_details"
+        android:paddingBottom="@dimen/activity_horizontal_margin" />
+
+    <!-- Add button -->
+    <Button
+        android:id="@+id/saveButton"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/add_button"
+        android:textColor="@android:color/primary_text_dark" />
+
+</LinearLayout>

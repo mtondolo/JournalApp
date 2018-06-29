@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Journal App</string>
+    <!-- Strings for AddTaskActivity -->
+    <!-- This etaskEntrytask has a unicode character for "..." = "&#8230;" -->
+    <string name="edit_task_description">Describe your taskEntity&#8230;</string>
+    <string name="edit_task_details">Detail your taskEntity&#8230;</string>
+    <string name="add_button">Add</string>
+    <string name="update_button">Update</string>
 </resources>

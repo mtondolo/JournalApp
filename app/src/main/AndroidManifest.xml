@@ -12,9 +12,16 @@
         <activity android:name=".task.TaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!-- AddTaskActivity's up button functionality-->
+        <activity
+            android:name=".task.AddTaskActivity"
+            android:parentActivityName=".task.TaskActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".task.TaskActivity" />
         </activity>
     </application>
 
