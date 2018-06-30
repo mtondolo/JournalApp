@@ -1,7 +1,7 @@
 package com.example.mtondolo.journalapp.task;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +18,7 @@ import com.example.mtondolo.journalapp.R;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
 import com.example.mtondolo.journalapp.util.TaskExecutors;
+import com.example.mtondolo.journalapp.util.TaskViewModel;
 
 import java.util.List;
 
@@ -99,18 +100,17 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         //Initialize member variable for the data base
         mDb = TaskDatabase.getInstance(getApplicationContext());
-        retrieveTasks();
+        setupViewModel();
     }
 
-    private void retrieveTasks() {
-        Log.d(TAG, "Actively retrieving the tasks from the DataBase");
-                // Wrap the return type with LiveData
-                LiveData<List<TaskEntity>> tasks = mDb.taskDao().loadAllTasks();
-                // Observe tasks and move the logic from runOnUiThread to onChanged
-                tasks.observe(this, new Observer<List<TaskEntity>>() {
+    private void setupViewModel() {
+        // Declare a ViewModel variable and initialize it by calling ViewModelProviders.of
+        TaskViewModel viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        // Observe the LiveData object in the ViewModel
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntity>>() {
                     @Override
                     public void onChanged(@Nullable List<TaskEntity> taskEntities) {
-                        Log.d(TAG, "Receiving database update from LiveData");
+                        Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
                         mAdapter.setTasks(taskEntities);
                     }
         });
