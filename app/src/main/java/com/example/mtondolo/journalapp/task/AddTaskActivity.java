@@ -1,8 +1,12 @@
 package com.example.mtondolo.journalapp.task;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,22 +62,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 // Assign the value of EXTRA_TASK_ID in the intent to mTaskId
                 // Use DEFAULT_TASK_ID as the default
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                // Get the diskIO Executor from the instance of AppExecutors and
-                // call the diskIO execute method with a new Runnable and implement its run method
-                TaskExecutors.getInstance().diskIO().execute(new Runnable() {
+                Log.d(TAG, "Actively retrieving a specific task from the DataBase");
+                // Wrap the return type with LiveData
+                final LiveData<TaskEntity> task = mDb.taskDao().loadTaskById(mTaskId);
+                // Observe tasks and move the logic from runOnUiThread to onChanged
+                task.observe(this, new Observer<TaskEntity>() {
                     @Override
-                    public void run() {
-                        // Use the loadTaskById method to retrieve the task with id mTaskId and
-                        // assign its value to a final TaskEntry variable
-                        final TaskEntity task = mDb.taskDao().loadTaskById(mTaskId);
-                        // Call the populateUI method with the retrieve tasks
-                        // Wrap it in a call to runOnUiThread
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                populateUI(task);
-                            }
-                        });
+                    public void onChanged(@Nullable TaskEntity taskEntity) {
+                        // Remove the observer as we do not need it any more
+                        task.removeObserver(this);
+                        Log.d(TAG, "Receiving database update from LiveData");
+                        populateUI(taskEntity);
                     }
                 });
             }
