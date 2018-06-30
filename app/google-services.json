@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "917969834903",
+    "firebase_url": "https://journal-app-208814.firebaseio.com",
+    "project_id": "journal-app-208814",
+    "storage_bucket": "journal-app-208814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917969834903:android:dda34144e09ffc4c",
+        "android_client_info": {
+          "package_name": "com.example.mtondolo.journalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917969834903-m79mj23f9382mfpc9kbafmlkvm9ho1h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mtondolo.journalapp",
+            "certificate_hash": "85a34f9421080269a575abf2a5c69f7133e2c6eb"
+          }
+        },
+        {
+          "client_id": "917969834903-72qb6f4gt3g0n7966l38tj17cf1mv6j8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC56pPUo-ZhE-Hx19J8mcr_Vmnk47VNO8k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917969834903-72qb6f4gt3g0n7966l38tj17cf1mv6j8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
