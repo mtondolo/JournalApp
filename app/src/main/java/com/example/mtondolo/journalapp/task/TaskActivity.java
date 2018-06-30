@@ -1,6 +1,9 @@
 package com.example.mtondolo.journalapp.task;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.mtondolo.journalapp.R;
@@ -72,8 +76,6 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
                         List<TaskEntity> tasks = mAdapter.getTasks();
                         // Call deleteTask in the taskDao with the task at that position
                         mDb.taskDao().deleteTask(tasks.get(position));
-                        // Call retrieveTasks method to refresh the UI
-                        retrieveTasks();
                     }
                 });
             }
@@ -97,33 +99,20 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         //Initialize member variable for the data base
         mDb = TaskDatabase.getInstance(getApplicationContext());
-    }
-
-    /**
-     * This method is called after this activity has been paused or restarted.
-     * Often, this is after new data has been inserted through an AddTaskActivity,
-     * so this re-queries the database data for any changes.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
         retrieveTasks();
     }
 
     private void retrieveTasks() {
-        TaskExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                // Extract the list of tasks to a final variable
-                final List<TaskEntity> tasks = mDb.taskDao().loadAllTasks();
-                // Wrap the setTask call in a call to runOnUiThread
-                runOnUiThread(new Runnable() {
+        Log.d(TAG, "Actively retrieving the tasks from the DataBase");
+                // Wrap the return type with LiveData
+                LiveData<List<TaskEntity>> tasks = mDb.taskDao().loadAllTasks();
+                // Observe tasks and move the logic from runOnUiThread to onChanged
+                tasks.observe(this, new Observer<List<TaskEntity>>() {
                     @Override
-                    public void run() {
-                        mAdapter.setTasks(tasks);
+                    public void onChanged(@Nullable List<TaskEntity> taskEntities) {
+                        Log.d(TAG, "Receiving database update from LiveData");
+                        mAdapter.setTasks(taskEntities);
                     }
-                });
-            }
         });
     }
 
