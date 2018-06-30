@@ -1,4 +1,4 @@
-package com.example.mtondolo.journalapp.task;
+package com.example.mtondolo.journalapp.addedittask;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;

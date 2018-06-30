@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.mtondolo.journalapp.R;
+import com.example.mtondolo.journalapp.addedittask.AddTaskActivity;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
 import com.example.mtondolo.journalapp.util.TaskExecutors;

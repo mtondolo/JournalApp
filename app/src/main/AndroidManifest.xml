@@ -17,7 +17,7 @@
         </activity>
         <!-- AddTaskActivity's up button functionality-->
         <activity
-            android:name=".task.AddTaskActivity"
+            android:name=".addedittask.AddTaskActivity"
             android:parentActivityName=".task.TaskActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
