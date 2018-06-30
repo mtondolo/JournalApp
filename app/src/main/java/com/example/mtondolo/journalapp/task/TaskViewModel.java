@@ -1,4 +1,4 @@
-package com.example.mtondolo.journalapp.util;
+package com.example.mtondolo.journalapp.task;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
