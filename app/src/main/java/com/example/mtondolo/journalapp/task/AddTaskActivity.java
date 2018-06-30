@@ -2,6 +2,7 @@ package com.example.mtondolo.journalapp.task;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.mtondolo.journalapp.R;
+import com.example.mtondolo.journalapp.addedittask.AddTaskViewModel;
+import com.example.mtondolo.journalapp.addedittask.AddTaskViewModelFactory;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
 import com.example.mtondolo.journalapp.util.TaskExecutors;
@@ -62,16 +65,18 @@ public class AddTaskActivity extends AppCompatActivity {
                 // Assign the value of EXTRA_TASK_ID in the intent to mTaskId
                 // Use DEFAULT_TASK_ID as the default
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                Log.d(TAG, "Actively retrieving a specific task from the DataBase");
-                // Wrap the return type with LiveData
-                final LiveData<TaskEntity> task = mDb.taskDao().loadTaskById(mTaskId);
-                // Observe tasks and move the logic from runOnUiThread to onChanged
-                task.observe(this, new Observer<TaskEntity>() {
+                // Declare a AddTaskViewModelFactory using mDb and mTaskId
+                AddTaskViewModelFactory factory = new AddTaskViewModelFactory(mDb, mTaskId);
+                // Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
+                // for that use the factory created above AddTaskViewModel
+                final AddTaskViewModel viewModel
+                        = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+                // Observe the LiveData object in the ViewModel. Use it also when removing the observer
+                viewModel.getTask().observe(this, new Observer<TaskEntity>() {
                     @Override
                     public void onChanged(@Nullable TaskEntity taskEntity) {
                         // Remove the observer as we do not need it any more
-                        task.removeObserver(this);
-                        Log.d(TAG, "Receiving database update from LiveData");
+                        viewModel.getTask().removeObserver(this);
                         populateUI(taskEntity);
                     }
                 });
