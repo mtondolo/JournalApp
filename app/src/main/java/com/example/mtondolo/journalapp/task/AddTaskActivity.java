@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 
 import com.example.mtondolo.journalapp.R;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
@@ -29,7 +28,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private static final String TAG = AddTaskActivity.class.getSimpleName();
 
     // Fields for views
-    EditText mDescriptionEditText, mDetailsEditText;
+    EditText mTitleEditText, mDescriptionEditText;
     Button mButton;
 
     // Member variable for the Database
@@ -91,8 +90,8 @@ public class AddTaskActivity extends AppCompatActivity {
      * initViews is called from onCreate to init the member variable views
      */
     private void initViews() {
+        mTitleEditText = findViewById(R.id.editTextTaskTitle);
         mDescriptionEditText = findViewById(R.id.editTextTaskDescription);
-        mDetailsEditText = findViewById(R.id.editTextTaskDetails);
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,8 +112,8 @@ public class AddTaskActivity extends AppCompatActivity {
             return;
         }
         // Use the variable task to populate the UI
+        mTitleEditText.setText(task.getTitle());
         mDescriptionEditText.setText(task.getDescription());
-        mDetailsEditText.setText(task.getTitle());
     }
 
     /**
@@ -122,11 +121,11 @@ public class AddTaskActivity extends AppCompatActivity {
      * It retrieves user input and inserts that new task data into the underlying database.
      */
     public void onSaveButtonClicked() {
+        String taskTitle = mTitleEditText.getText().toString();
         String taskDescription = mDescriptionEditText.getText().toString();
-        String taskDetails = mDetailsEditText.getText().toString();
         Date date = new Date();
 
-        final TaskEntity task = new TaskEntity(taskDescription, taskDetails, date);
+        final TaskEntity task = new TaskEntity(taskTitle, taskDescription, date);
         TaskExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

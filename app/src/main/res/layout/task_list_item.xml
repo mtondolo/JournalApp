@@ -7,13 +7,13 @@
 
     <!--This TextView holds the task description for one particular day in the journal-->
     <TextView
-        android:id="@+id/tv_taskDescription"
+        android:id="@+id/tv_taskTitle"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
-        tools:text="Task Description"/>
+        tools:text="Task Title"/>
 
     <!--This TextView holds the task date for one particular day in the journal-->
     <TextView

@@ -44,7 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Class variables for the task description and priority TextViews
-        TextView taskDescriptionTextView;
+        TextView taskTitleTextView;
         TextView enteredAtTextView;
 
         /**
@@ -54,8 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
          */
         public TaskViewHolder(View itemView) {
             super(itemView);
-
-            taskDescriptionTextView = itemView.findViewById(R.id.tv_taskDescription);
+            taskTitleTextView = itemView.findViewById(R.id.tv_taskTitle);
             enteredAtTextView = itemView.findViewById(R.id.tv_taskDate);
             itemView.setOnClickListener(this);
         }
@@ -71,7 +70,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the task_item to a view
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.task_item, parent, false);
+                .inflate(R.layout.task_list_item, parent, false);
 
         return new TaskViewHolder(view);
     }
@@ -80,11 +79,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         // Determine the values of the wanted data
         TaskEntity taskEntity = mTaskEntities.get(position);
-        String description = taskEntity.getDescription();
+        String title = taskEntity.getTitle();
         String enteredAt = dateFormat.format(taskEntity.getEnteredAt());
 
         //Set values
-        holder.taskDescriptionTextView.setText(description);
+        holder.taskTitleTextView.setText(title);
         holder.enteredAtTextView.setText(enteredAt);
     }
 

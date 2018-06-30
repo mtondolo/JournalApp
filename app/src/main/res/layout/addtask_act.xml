@@ -14,24 +14,24 @@
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <!-- EditText for getttaskEntrytask description input -->
+    <!-- EditText for getttaskEntrytask title input -->
     <EditText
-        android:id="@+id/editTextTaskDescription"
+        android:id="@+id/editTextTaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/edit_task_description"
+        android:hint="@string/edit_task_title"
         android:paddingBottom="@dimen/activity_horizontal_margin" />
 
-    <!-- EditText for getttaskEntitytask details input -->
+    <!-- EditText for getttaskEntitytask description input -->
     <EditText
-        android:id="@+id/editTextTaskDetails"
+        android:id="@+id/editTextTaskDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:hint="@string/edit_task_details"
+        android:hint="@string/edit_task_description"
         android:paddingBottom="@dimen/activity_horizontal_margin" />
 
     <!-- Add button -->
