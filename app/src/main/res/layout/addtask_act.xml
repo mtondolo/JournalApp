@@ -17,6 +17,7 @@
     <!-- EditText for getttaskEntrytask title input -->
     <EditText
         android:id="@+id/editTextTaskTitle"
+        style="@style/TextAppearance.AppCompat.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -26,6 +27,7 @@
     <!-- EditText for getttaskEntitytask description input -->
     <EditText
         android:id="@+id/editTextTaskDescription"
+        style="@style/TextAppearance.AppCompat.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

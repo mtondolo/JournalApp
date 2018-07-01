@@ -70,7 +70,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the task_item to a view
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.task_list_item, parent, false);
+                .inflate(R.layout.task_list, parent, false);
 
         return new TaskViewHolder(view);
     }
