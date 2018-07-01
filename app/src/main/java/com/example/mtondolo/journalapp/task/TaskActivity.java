@@ -41,15 +41,14 @@ import java.util.List;
 import static android.widget.GridLayout.VERTICAL;
 
 public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener,
-View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    private SignInButton signInButton;
-    private FloatingActionButton floatingActionButton;
-    private  GoogleApiClient googleApiClient;
     private static final int REQ_CODE = 9001;
-
     // Constant for logging
     private static final String TAG = TaskActivity.class.getSimpleName();
+    private SignInButton signInButton;
+    private FloatingActionButton floatingActionButton;
+    private GoogleApiClient googleApiClient;
     // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
@@ -76,8 +75,8 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail().build();
         googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions)
                 .build();
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
@@ -146,11 +145,11 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
         TaskViewModel viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         // Observe the LiveData object in the ViewModel
         viewModel.getTasks().observe(this, new Observer<List<TaskEntity>>() {
-                    @Override
-                    public void onChanged(@Nullable List<TaskEntity> taskEntities) {
-                        Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
-                        mAdapter.setTasks(taskEntities);
-                    }
+            @Override
+            public void onChanged(@Nullable List<TaskEntity> taskEntities) {
+                Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
+                mAdapter.setTasks(taskEntities);
+            }
         });
     }
 
@@ -194,8 +193,7 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.btn_login:
                 signIn();
                 break;
@@ -209,12 +207,12 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     }
 
-    private void signIn(){
+    private void signIn() {
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent, REQ_CODE);
     }
 
-    private void signOut(){
+    private void signOut() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -224,8 +222,8 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     }
 
-    private void handleResult(GoogleSignInResult result){
-        if(result.isSuccess()){
+    private void handleResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
             updateUI(true);
         } else {
@@ -234,8 +232,8 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     }
 
-    private void updateUI(boolean isLogin){
-        if(isLogin){
+    private void updateUI(boolean isLogin) {
+        if (isLogin) {
             mRecyclerView.setVisibility(View.VISIBLE);
             floatingActionButton.setVisibility(View.VISIBLE);
             signInButton.setVisibility(View.GONE);
@@ -252,7 +250,7 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQ_CODE){
+        if (requestCode == REQ_CODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
         }
@@ -263,7 +261,7 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
         // Inflate the menu options from the res/menu/menu.xml file.
         // This adds menu items to the app bar.
-        getMenuInflater ().inflate ( R.menu.menu, menu );
+        getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -271,10 +269,10 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId ()) {
+        switch (item.getItemId()) {
             // Respond to a click on the "Delete all entries" menu option
             case R.id.btn_logout:
-                signOut ();
+                signOut();
                 return true;
         }
         return super.onOptionsItemSelected(item);

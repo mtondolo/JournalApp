@@ -4,6 +4,11 @@
     <!-- This etaskEntrytask has a unicode character for "..." = "&#8230;" -->
     <string name="edit_task_title">Enter your task title&#8230;</string>
     <string name="edit_task_description">Describe your task&#8230;</string>
+    <string name="edit_task_activity_label">Task Details</string>
+
+    <!-- Strings for TaskActivity -->
+    <string name="add_task_activity_label">Task List</string>
+
     <string name="add_button">Add</string>
     <string name="update_button">Update</string>
     <string name="title_activity_login">Sign in</string>

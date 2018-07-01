@@ -22,11 +22,12 @@ public class TaskEntity {
 
     /**
      * Use this constructor to create a new active TaskEntity.
+     *
      * @param title       title of the task
      * @param description description of the task
-     * @param enteredAt  date of entering or updating the task
+     * @param enteredAt   date of entering or updating the task
      */
-   @Ignore
+    @Ignore
     public TaskEntity(String title, String description, Date enteredAt) {
         this.title = title;
         this.description = description;
@@ -36,6 +37,7 @@ public class TaskEntity {
     /**
      * Use this constructor to create an active TaskEntity if the TaskEntity already has an id (copy of another
      * TaskEntity).
+     *
      * @param title       title of the task
      * @param description description of the task
      * @param enteredAt   date of entering or updating the task

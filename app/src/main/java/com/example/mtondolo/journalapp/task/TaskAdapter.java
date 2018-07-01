@@ -40,32 +40,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         mItemClickListener = listener;
     }
 
-    // Inner class for creating ViewHolders
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        // Class variables for the task description and priority TextViews
-        TextView taskTitleTextView;
-        TextView enteredAtTextView;
-
-        /**
-         * Constructor for the TaskViewHolders.
-         *
-         * @param itemView The view inflated in onCreateViewHolder
-         */
-        public TaskViewHolder(View itemView) {
-            super(itemView);
-            taskTitleTextView = itemView.findViewById(R.id.tv_taskTitle);
-            enteredAtTextView = itemView.findViewById(R.id.tv_taskDate);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int elementId = mTaskEntities.get(getAdapterPosition()).getId();
-            mItemClickListener.onItemClickListener(elementId);
-        }
-    }
-
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the task_item to a view
@@ -111,5 +85,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public interface ItemClickListener {
         void onItemClickListener(int itemId);
+    }
+
+    // Inner class for creating ViewHolders
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        // Class variables for the task description and priority TextViews
+        TextView taskTitleTextView;
+        TextView enteredAtTextView;
+
+        /**
+         * Constructor for the TaskViewHolders.
+         *
+         * @param itemView The view inflated in onCreateViewHolder
+         */
+        public TaskViewHolder(View itemView) {
+            super(itemView);
+            taskTitleTextView = itemView.findViewById(R.id.tv_taskTitle);
+            enteredAtTextView = itemView.findViewById(R.id.tv_taskDate);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int elementId = mTaskEntities.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elementId);
+        }
     }
 }
