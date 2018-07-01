@@ -20,9 +20,14 @@ import com.example.mtondolo.journalapp.addedittask.AddTaskActivity;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
 import com.example.mtondolo.journalapp.util.TaskExecutors;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 
 
 import java.util.List;
@@ -61,6 +66,14 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
         signInButton.setOnClickListener(this);
         mRecyclerView.setVisibility(View.GONE);
         floatingActionButton.setVisibility(View.GONE);
+
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
+                .build();
 
 
 
@@ -149,6 +162,13 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     @Override
     public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.btn_login:
+                signIn();
+                break;
+
+        }
 
     }
 
@@ -156,4 +176,51 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    private void signIn(){
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(intent, REQ_CODE);
+    }
+
+    private void signOut(){
+
+    }
+
+    private void handleResult(GoogleSignInResult result){
+        if(result.isSuccess()){
+            GoogleSignInAccount account = result.getSignInAccount();
+            updateUI(true);
+        } else {
+            updateUI(false);
+        }
+
+    }
+
+    private void updateUI(boolean isLogin){
+        if(isLogin){
+            mRecyclerView.setVisibility(View.VISIBLE);
+            floatingActionButton.setVisibility(View.VISIBLE);
+            signInButton.setVisibility(View.GONE);
+
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            floatingActionButton.setVisibility(View.GONE);
+            signInButton.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQ_CODE){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleResult(result);
+        }
+    }
 }
+
+
+
+
