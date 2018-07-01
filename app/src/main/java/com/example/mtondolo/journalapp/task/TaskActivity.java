@@ -3,6 +3,7 @@ package com.example.mtondolo.journalapp.task;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +20,25 @@ import com.example.mtondolo.journalapp.addedittask.AddTaskActivity;
 import com.example.mtondolo.journalapp.data.TaskDatabase;
 import com.example.mtondolo.journalapp.data.TaskEntity;
 import com.example.mtondolo.journalapp.util.TaskExecutors;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 import java.util.List;
 
 import static android.widget.GridLayout.VERTICAL;
 
-public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener{
+public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener,
+View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+
+
+    private SignInButton signInButton;
+    private FloatingActionButton floatingActionButton;
+    private  GoogleApiClient googleApiClient;
+    private static final int REQ_CODE = 9001;
+
+
     // Constant for logging
     private static final String TAG = TaskActivity.class.getSimpleName();
     // Member variables for the adapter and RecyclerView
@@ -42,6 +55,14 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         // Set the RecyclerView to its corresponding view
         mRecyclerView = findViewById(R.id.recyclerViewTasks);
+        signInButton = findViewById(R.id.btn_login);
+        floatingActionButton = findViewById(R.id.fab);
+
+        signInButton.setOnClickListener(this);
+        mRecyclerView.setVisibility(View.GONE);
+        floatingActionButton.setVisibility(View.GONE);
+
+
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
@@ -124,5 +145,15 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemC
         Intent intent = new Intent(TaskActivity.this, AddTaskActivity.class);
         intent.putExtra(AddTaskActivity.EXTRA_TASK_ID, itemId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

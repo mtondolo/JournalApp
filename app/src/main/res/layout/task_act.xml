@@ -20,4 +20,11 @@
         android:tint="@android:color/white"
         app:srcCompat="@android:drawable/ic_input_add" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"/>
+
 </FrameLayout>
