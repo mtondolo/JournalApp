@@ -14,7 +14,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.mtondolo.journalapp.R;
 import com.example.mtondolo.journalapp.addedittask.AddTaskActivity;
@@ -30,6 +33,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 
 import java.util.List;
@@ -39,12 +43,10 @@ import static android.widget.GridLayout.VERTICAL;
 public class TaskActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener,
 View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
-
     private SignInButton signInButton;
     private FloatingActionButton floatingActionButton;
     private  GoogleApiClient googleApiClient;
     private static final int REQ_CODE = 9001;
-
 
     // Constant for logging
     private static final String TAG = TaskActivity.class.getSimpleName();
@@ -60,12 +62,13 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_act);
 
-        // Set the RecyclerView to its corresponding view
-        mRecyclerView = findViewById(R.id.recyclerViewTasks);
-        signInButton = findViewById(R.id.btn_login);
-        floatingActionButton = findViewById(R.id.fab);
+        // Set the views to their corresponding views
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
+        signInButton = (SignInButton) findViewById(R.id.btn_login);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
 
         signInButton.setOnClickListener(this);
+
         mRecyclerView.setVisibility(View.GONE);
         floatingActionButton.setVisibility(View.GONE);
 
@@ -76,8 +79,6 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
                 .enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
                 .build();
-
-
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
@@ -179,7 +180,7 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Checking sign in state...");
+            progressDialog.setMessage("Signing in ...");
             progressDialog.show();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
@@ -214,6 +215,12 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     }
 
     private void signOut(){
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                updateUI(false);
+            }
+        });
 
     }
 
@@ -249,6 +256,28 @@ View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu options from the res/menu/menu.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater ().inflate ( R.menu.menu, menu );
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId ()) {
+            // Respond to a click on the "Delete all entries" menu option
+            case R.id.btn_logout:
+                signOut ();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
