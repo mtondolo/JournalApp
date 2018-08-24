@@ -4,7 +4,7 @@ Journal App is an Android app which diplays a list of tasks according to date en
 - Register and Login using google authentication.
 - View all entries to the jouranl.
 - View the contents of a journal  entry.
- - Add and modify a task.
+- Add and modify a task.
  ## Notes:
  Due to lack of time the following features were not taken into account:
   - MVP Design
