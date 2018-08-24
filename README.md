@@ -10,7 +10,7 @@ Journal App is an Android app which diplays a list of tasks according to date en
   - MVP Design
   - Validation checks for CRUD operations
   - Intent messages ofr CRUD operations.
-  -UI Polishing is still work in progress
+  - UI Polishing is still work in progress
   ## Testing
   The app was developed under the following SDK:
   - minSdkVersion 16
